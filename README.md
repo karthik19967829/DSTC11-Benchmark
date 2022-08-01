@@ -5,6 +5,10 @@ This project will investigate more recent approaches, based on fine-tuned large 
 ## Work Plan
 Investigate benckmarking:
 - replicate dstc-10 setup; baseline code (Deep AM-FM) + data = result
+  - ### Updates:
+    - AM pipeline using sentencetransformers is created , results need to be compared 
+    - We have ref corpus for traing a LM , then we can calculate FM (Fluency metric) can be calculated    
+     
 - define dstc11 eanchmark system: using metrics from dstc10 *and possiby others*
 - build model (e.g. OPT-300k, T5, etc): fine tune
 - benchmark candidate and Deep AM-FM (dstc-10 benchmark data) to verify
