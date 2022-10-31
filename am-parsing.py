@@ -30,7 +30,7 @@ if __name__ == '__main__':
     gen_sents = get_gen_sents() # per system
     ref_sents = get_ref_sents() # 11 reference sentences per generated sentence
 
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = SentenceTransformer('sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens')
     gen_embs = [model.encode(sents, convert_to_tensor=True) for sents in gen_sents]
     ref_embs = [model.encode(sents, convert_to_tensor=True) for sents in ref_sents]
 
