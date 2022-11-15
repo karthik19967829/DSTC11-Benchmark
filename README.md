@@ -2,19 +2,8 @@
 The purpose of this project is to identify a baseline classifier for DSTC-11. The default choice is Zhang et al's (2020) [AM-FM tool](readings/IWSDS_2020_paper_11.pdf) (used for DSTC-10 and previously). 
 This project will investigate more recent approaches, based on fine-tuned large language models. Xhang et al note that their approach may be limited due to domain specificity. On the other hand LLMs are trained from large corpora that in priciple are less domain-dependent. This is an empirical question.
 
-## Work Plan
-Investigate benckmarking:
-- replicate dstc-10 setup; baseline code (Deep AM-FM) + data = result
-  - ### Updates:
-    - AM pipeline using sentencetransformers is created , results need to be compared 
-    - We have ref corpus for traing a LM , then we can calculate FM (Fluency metric) can be calculated    
-     
-- define dstc11 eanchmark system: using metrics from dstc10 *and possiby others*
-- build model (e.g. OPT-300k, T5, etc): fine tune
-- benchmark candidate and Deep AM-FM (dstc-10 benchmark data) to verify
-- propose a DSTC11 candidate 
+## Installation 
+pip install -r requirements.txt 
 
-Agree on DSTT11 training/dev/test datasets (with UMadrid)
-
-## Materials
-- [readings](readings/README.md) on the topic
+## Usage
+bash test_sentbert.sh -d <dataset_name> cuda -s wor
