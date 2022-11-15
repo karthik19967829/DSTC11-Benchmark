@@ -142,7 +142,7 @@ if __name__ == "__main__":
     )
 
     # get data
-    with open("../../human_evaluation_data/{}_eval.json".format(dataset)) as f:
+    with open("human_evaluation_data/{}_eval.json".format(dataset)) as f:
         df = pd.json_normalize(json.load(f))
     df = normalize_df(dataset, df, dataset_meta_info)
     response_list = df.response.to_list()
