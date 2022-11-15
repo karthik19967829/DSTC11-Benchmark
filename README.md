@@ -3,9 +3,9 @@ The purpose of this project is to identify a baseline classifier for DSTC-11. Th
 This project will investigate more recent approaches, based on fine-tuned large language models. Xhang et al note that their approach may be limited due to domain specificity. On the other hand LLMs are trained from large corpora that in priciple are less domain-dependent. This is an empirical question.
 
 ## Installation
-conda create -n dstc11-env --python=3.8.6
-conda activate dstc11-env
-pip install -r requirements.txt 
+conda create -n dstc11-env --python=3.8.6  
+conda activate dstc11-env <br>
+pip install -r requirements.txt  
 
 ## Usage
 bash test_sentbert.sh -d <dataset_name> cuda -s wor
