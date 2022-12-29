@@ -11,7 +11,7 @@ pip install -r requirements.txt
 ## Usage
 1) Get the translation/paraphrases of inputs
 
-```python add_trans-paraphrase_data.py --data_name humod```
+```python add_trans-paraphrase_data.py --data_name <dataset_name>```
 
 2) Run code to get the correlations for the Spanish set of inputs
 
