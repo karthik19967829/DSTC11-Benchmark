@@ -9,4 +9,18 @@ pip install -r requirements.txt
 ```
 ```mkdir human_evaluation_data``` (add all the dataset JSONs within this) 
 ## Usage
-```bash test_sentbert.sh -d <dataset_name> cuda -s wor```
+1) Get the translation/paraphrases of inputs
+
+python add_trans-paraphrase_data.py --data_name humod
+
+2) Run code to get the correlations for the Spanish set of inputs
+
+```bash test_sentbert.sh -d <dataset_name> cuda -s wor -e es```
+
+3) Run code to get the correlations for the Chinese set of inputs
+
+```bash test_sentbert.sh -d <dataset_name> cuda -s wor -e zh```
+
+4) Run code to get the correlations for the paraphrases set of inputs (meaasure robustness of metrics)
+
+```bash test_sentbert.sh -d <dataset_name> cuda -s wor -e par```
