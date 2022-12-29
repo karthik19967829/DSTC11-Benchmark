@@ -11,7 +11,7 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 from scipy.stats import spearmanr, pearsonr
-from transformers import BertModel, BertTokenizer, GPT2Tokenizer, GPT2LMHeadModel
+from transformers import BertModel, BertTokenizer, GPT2Tokenizer, GPT2LMHeadModel, AutoTokenizer, AutoModelWithLMHead
 import re
 from sentence_transformers import SentenceTransformer, util
 
@@ -118,6 +118,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", type=str, default="up")
     parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("--eval_type", type=str, default="par")
     parser.add_argument(
         "--am_model_path", type=str, default="embedding_models/persona_am/"
     )
@@ -128,13 +129,23 @@ if __name__ == "__main__":
     print(args)
     globals().update(args.__dict__)
 
-    bert_model = BertModel.from_pretrained(am_model_path).to(device)
-    bert_tokenizer = BertTokenizer.from_pretrained(am_model_path)
-    bert_model.eval()
+    #bert_model = BertModel.from_pretrained(am_model_path).to(device)
+    #bert_tokenizer = BertTokenizer.from_pretrained(am_model_path)
+    #bert_model.eval()
 
-    gpt2_tokenizer = GPT2Tokenizer.from_pretrained(fm_model_path)
-    gpt2_model = GPT2LMHeadModel.from_pretrained(fm_model_path).to(device)
+     
+    #gpt2_tokenizer = GPT2Tokenizer.from_pretrained(fm_model_path)
+    #gpt2_model = GPT2LMHeadModel.from_pretrained(fm_model_path).to(device)
+    #gpt2_model.eval()
+
+    #gpt2_tokenizer =  AutoTokenizer.from_pretrained('miguelvictor/multilingual-gpt2-large')
+    #gpt2_model = AutoModelWithLMHead.from_pretrained('miguelvictor/multilingual-gpt2-large').to(device)
+    #gpt2_model.eval()
+
+    gpt2_tokenizer = GPT2Tokenizer.from_pretrained('sberbank-ai/mGPT')
+    gpt2_model = GPT2LMHeadModel.from_pretrained('sberbank-ai/mGPT').to(device)
     gpt2_model.eval()
+
 
     # xlmr_sentbert_model
     xlmr_sentbert_model = SentenceTransformer(
@@ -142,14 +153,27 @@ if __name__ == "__main__":
     )
 
     # get data
-    with open("human_evaluation_data/{}_eval.json".format(dataset)) as f:
+    with open("human_evaluation_data/DSTC10/metadata/{}/{}_eval_zh_es_pa.json".format(dataset, dataset)) as f:
         df = pd.json_normalize(json.load(f))
     df = normalize_df(dataset, df, dataset_meta_info)
-    response_list = df.response.to_list()
+    if args.eval_type =='zh':
+        response_list = df.response_zh.to_list()
+        ct_list = df.context_zh.to_list()
+    elif args.eval_type =='es':
+        response_list = df.response_es.to_list()
+        ct_list = df.context_es.to_list()
+    elif args.eval_type =='par':
+        response_list = df.response_pa.to_list()
+        ct_list = df.context_pa.to_list()
+    else:
+        response_list = df.response.to_list()
+        ct_list = df.context.to_list()
+
     response_list = [item if item != "" else "no response" for item in response_list]
 
-    context_list = [item.split("\n")[-1] for item in df.context.to_list()]
-
+    context_list = [item.strip().split("\n")[-1] for item in ct_list]
+    print(context_list[:2])
+    print(response_list[:2])
     annotations = [
         "annotations." + _ for _ in dataset_meta_info[dataset]["annotations"]
     ]
@@ -203,11 +227,15 @@ if __name__ == "__main__":
             p_q = -loss_q * (len(q) - 1)
             score = (p_joint - (p_q)) / ((len(joint_enc) - 1) - (len(q) - 1))
             fm_scores.append(score.item())
+            if True in np.isnan([score.item()]):
+                print('###'+prev+'####', '@@@'+cur+'@@@', loss_joint, loss_q, p_joint, p_q, len(joint_enc), len(q))
 
     cutoff = np.quantile(fm_scores, 0.05)
     modified_rating = np.array([cutoff if t < cutoff else t for t in fm_scores])
 
     normed_fm_scores = (modified_rating - cutoff) / np.abs(cutoff)
+    if True in np.isnan(normed_fm_scores):
+        print('fm_scores has a nan value')
     for k, v in human_scores.items():
         kf = re.match(r"(.+?)\.(.+)", k).group(2)  # strip off redundant info
         pear, p = pearsonr(v, normed_fm_scores)
