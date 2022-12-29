@@ -13,10 +13,11 @@ scoring=wor  # wr | wor | dial
 # wor: reference-free; turn-level
 # dial: global dialog rating
 
-if [ $# -eq 0 ]; then echo "$0: -d <dataset> -p <processor> -s <scoring>"; exit 2 ; fi
+eval_type=zh
+if [ $# -eq 0 ]; then echo "$0: -d <dataset> -p <processor> -s <scoring> -e <eval_type>"; exit 2 ; fi
 
-SHORT=d:,p:,s:,h
-LONG=dataset:,processor:,scoring:,help
+SHORT=d:,p:,s:,e:,h
+LONG=dataset:,processor:,scoring:,eval_type:,help
 OPTS=$(getopt --options $SHORT --longoptions $LONG -- "$@")
 
 eval set -- "$OPTS"
@@ -34,6 +35,10 @@ while [ : ]; do
 	    scoring=$2
 	    shift 2
 	    ;;
+	-e | eval_type)
+	    eval_type=$2
+	    shift 2
+	    ;;       
 	-- )
 	    shift;
 	    break
@@ -51,6 +56,7 @@ if [[ $? -ne 0 ]]; then  exit 1; fi
 echo "dataset:    ${dataset}"
 echo "processor:  ${processor}"
 echo "scoring:    ${scoring}"
+echo "eval_type": ${eval_type}
 python --version
 echo ""
 # debug="-m pdb"
@@ -60,14 +66,13 @@ python ${debug} compute_sent_${scoring}.py \
        \
        --dataset=${dataset} \
        --device=${processor} \
-       \
-       --am_model_path=../../embedding_models/full_am \
-       --fm_model_path=../../language_models/full_fm # \
+       --eval_type=${eval_type}
+       --am_model_path=finetuned_lm/embedding_models/full_am \
+       --fm_model_path=finetuned_lm/language_models/full_fm # \
 #   | grep 'annotations.Overall' > "${dataset}_${scoring}__results.score"
 #cat  "${dataset}_${scoring}__results.score}"  # show the result on screen
 echo "---------------------"
 
 
 #
-
 
