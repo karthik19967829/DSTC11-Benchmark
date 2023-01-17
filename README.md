@@ -4,7 +4,7 @@ This project will investigate more recent approaches, based on fine-tuned large 
 
 ## Installation and setup
 ```conda create -n dstc11-env --python=3.8.6  
-conda activate dstc11-env <br>
+conda activate dstc11-env
 pip install -r requirements.txt  
 ```
 ```mkdir human_evaluation_data``` (add all the dataset JSONs within this) 
