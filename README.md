@@ -4,10 +4,9 @@ The purpose of this project is to identify a baseline classifier for DSTC-11. Th
 
 This project will investigate more recent approaches, based on fine-tuned large language models. Zhang et al note that their approach may be limited due to domain specificity. On the other hand LLMs are trained from large corpora that in priciple are less domain-dependent. This is an empirical question.
 
-# Automatic Evaluation Leaderboard
+# Automatic Evaluation Results
 
-The leaderboard shows names of submissions and their corresponding Spearman Correlation Coefficients for each development dataset.
-
+The leaderboard shows the corresponding Spearman Correlation Coefficients for each development dataset obtained by the baseline model. The name of each column corresponds to an [abbreviation](https://github.com/Mario-RC/dstc11_track4_robust_multilingual_metrics/blob/main/dstc11/track4-provided-datasets.md#annex-existing-datasets-for-benchmarking) of the development datasets respectively.
 
 ## Task 1: Metrics for Multilingual Data (development)
 
