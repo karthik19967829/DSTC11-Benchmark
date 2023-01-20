@@ -6,7 +6,7 @@ This project will investigate more recent approaches, based on fine-tuned large 
 
 # Automatic Evaluation Results
 
-The leaderboard shows the corresponding Spearman Correlation Coefficients for each development dataset obtained by the baseline model. The name of each column corresponds to an [abbreviation](https://github.com/Mario-RC/dstc11_track4_robust_multilingual_metrics/blob/main/dstc11/track4-provided-datasets.md#annex-existing-datasets-for-benchmarking) of the development datasets respectively.
+The leaderboard shows the corresponding Spearman Correlation Coefficients for each development dataset obtained by the baseline model. The name of each column corresponds to an [abbreviation](https://github.com/Mario-RC/dstc11_track4_robust_multilingual_metrics/blob/main/dstc11/track4-provided-datasets.md#provided-datasets) of the development datasets respectively.
 
 ## Task 1: Metrics for Multilingual Data (development)
 
