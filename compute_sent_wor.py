@@ -1,4 +1,4 @@
-# score am/fm per args
+# Score AM/FM per args
 # [20221020] (air) added minimal comments
 #
 
@@ -20,12 +20,35 @@ np.random.seed(2000)
 
 
 dataset_meta_info = {
-    "dstc6": {"num_references": 11, "annotations": ["overall"], "aggregation": np.mean},
-    "humod": {
-        "num_references": 3,
-        "annotations": ["language_usage", "relevance"],
+    "convai2-grade": {"annotations": ["relevance"], "aggregation": np.mean},
+    "dailydialog-grade": {"annotations": ["relevance"], "aggregation": np.mean},
+    "dailydialog-gupta": {"annotations": ["overall"], "aggregation": lambda x: x[0]},
+    "dailydialog-predictive": {"annotations": ["overall"], "aggregation": np.mean},
+    "dailydialog-holistic": {
+        "annotations": ["relevance"],
+        "aggregation": lambda x: x[0],
+    },
+    "dailydialog-zhao": {
+        "num_references": 1,
+        "annotations": ["content", "grammar", "appropriateness", "relevance"],
         "aggregation": np.mean,
     },
+    # "dstc6": {"num_references": 11, "annotations": ["overall"], "aggregation": np.mean},
+    "dstc7": {
+        "num_references": 1,
+        "annotations": ["relevance", "informativeness", "overall"],
+        "aggregation": np.mean,
+    },
+    # "dstc10-persona": {
+    #     "annotations": ["content", "grammar", "appropriateness", "relevance"],
+    #     "aggregation": np.mean,
+    # },
+    # "dstc10-topical": {
+    #     "annotations": ["content", "grammar", "appropriateness", "relevance"],
+    #     "aggregation": np.mean,
+    # },
+    "empathetic-grade": {"annotations": ["relevance"], "aggregation": np.mean},
+    # "esl": {"annotations": ["appropriateness"], "aggregation": lambda x: x[0]},
     "fed-turn": {
         "annotations": [
             "Correct",
@@ -40,40 +63,42 @@ dataset_meta_info = {
         ],
         "aggregation": np.mean,
     },
-    "convai2-grade": {"annotations": ["relevance"], "aggregation": np.mean},
-    "empathetic-grade": {"annotations": ["relevance"], "aggregation": np.mean},
-    "jsalt": {"annotations": ["appropriateness"], "aggregation": np.mean},
-    "dailydialog-grade": {"annotations": ["relevance"], "aggregation": np.mean},
-    "dailydialog-predictive": {"annotations": ["overall"], "aggregation": np.mean},
-    "dailydialog-holistic": {
-        "annotations": ["relevance"],
+    "fed-dial": {
+        "annotations": [
+            "Coherent",
+            "Error recovery",
+            "Consistent",
+            "Diverse",
+            "Depth",
+            "Likeable",
+            "Understanding",
+            "Flexible",
+            "Informative",
+            "Inquisitive",
+            "Overall",
+        ],
+        "aggregation": np.mean,
+    },
+    "humod": {
+        "num_references": 3,
+        "annotations": ["language_usage", "relevance"],
+        "aggregation": np.mean,
+    },
+    # "jsalt": {"annotations": ["appropriateness"], "aggregation": np.mean},
+    # "ncm": {"annotations": ["appropriateness"], "aggregation": lambda x: x[0]},
+    "persona-see": {
+        "annotations": [
+            "avoid_rep",
+            "enjoy",
+            "fluency",
+            "inquisitive",
+            "interest",
+            "listen",
+            "make_sense",
+            "persona_guess",
+            "turing",
+        ],
         "aggregation": lambda x: x[0],
-    },
-    "dailydialog-gupta": {"annotations": ["overall"], "aggregation": lambda x: x[0]},
-    "esl": {"annotations": ["appropriateness"], "aggregation": lambda x: x[0]},
-    "ncm": {"annotations": ["appropriateness"], "aggregation": lambda x: x[0]},
-    "dstc10-topical": {
-        "annotations": ["content", "grammar", "appropriateness", "relevance"],
-        "aggregation": np.mean,
-    },
-    "dstc10-persona": {
-        "annotations": ["content", "grammar", "appropriateness", "relevance"],
-        "aggregation": np.mean,
-    },
-    "dailydialog-zhao": {
-        "num_references": 1,
-        "annotations": ["content", "grammar", "appropriateness", "relevance"],
-        "aggregation": np.mean,
-    },
-    "dstc7": {
-        "num_references": 1,
-        "annotations": ["relevance", "informativeness", "overall"],
-        "aggregation": np.mean,
-    },
-    "persona-zhao": {
-        "num_references": 1,
-        "annotations": ["appropriateness"],
-        "aggregation": np.mean,
     },
     "persona-usr": {
         "num_references": 1,
@@ -85,6 +110,11 @@ dataset_meta_info = {
             "Uses Knowledge",
             "Overall",
         ],
+        "aggregation": np.mean,
+    },
+    "persona-zhao": {
+        "num_references": 1,
+        "annotations": ["appropriateness"],
         "aggregation": np.mean,
     },
     "topical-usr": {
@@ -146,14 +176,15 @@ if __name__ == "__main__":
     gpt2_model = GPT2LMHeadModel.from_pretrained('sberbank-ai/mGPT').to(device)
     gpt2_model.eval()
 
-
     # xlmr_sentbert_model
     xlmr_sentbert_model = SentenceTransformer(
         "sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens"
     )
 
     # get data
-    with open("human_evaluation_data/DSTC10/metadata/{}/{}_eval_zh_es_pa.json".format(dataset, dataset)) as f:
+    path_data = "DSTC_11_Track_4/metadata/dev/"
+    path_dataset = path_data + "{}/{}_eval_zh_es_pa.json".format(dataset, dataset)
+    with open(path_dataset) as f:
         df = pd.json_normalize(json.load(f))
     df = normalize_df(dataset, df, dataset_meta_info)
     if args.eval_type =='zh':
@@ -207,9 +238,9 @@ if __name__ == "__main__":
     for k, v in human_scores.items():
         pear, p = pearsonr(v, normed_am_scores)
         kf = re.match(r"(.+?)\.(.+)", k).group(2)  # strip off redundant info
-        print(f"AM -- Pearson:  {kf:s}=> {pear:6.3f}  p={p:6.4f}")
+        print(f"AM -- Pearson:  {kf:s} => {pear:6.3f}  p={p:6.4f}")
         spear, p = spearmanr(v, normed_am_scores)
-        print(f"AM -- Spearman: {kf:s}=> {spear:6.3f}  p={p:6.4f}")
+        print(f"AM -- Spearman: {kf:s} => {spear:6.3f}  p={p:6.4f}")
 
     df["am_scores"] = normed_am_scores
 
@@ -239,9 +270,9 @@ if __name__ == "__main__":
     for k, v in human_scores.items():
         kf = re.match(r"(.+?)\.(.+)", k).group(2)  # strip off redundant info
         pear, p = pearsonr(v, normed_fm_scores)
-        print(f"AM -- Pearson:  {kf:s}=> {pear:6.3f}  p={p:6.4f}")
+        print(f"FM -- Pearson:  {kf:s} => {pear:6.3f}  p={p:6.4f}")
         spear, p = spearmanr(v, normed_fm_scores)
-        print(f"FM -- Spearman: {kf:s}=> {spear:6.3f} p={p:6.4f}")
+        print(f"FM -- Spearman: {kf:s} => {spear:6.3f} p={p:6.4f}")
 
     df["fm_scores"] = normed_fm_scores
 
@@ -253,20 +284,19 @@ if __name__ == "__main__":
     for k, v in human_scores.items():
         kf = re.match(r"(.+?)\.(.+)", k).group(2)  # strip off redundant info
         pear, p = pearsonr(v, am_fm_scores)
-        print(f"_wor FM -- Pearson:  {kf:s}=> {pear:6.3f}  p={p:6.4f}")
+        print(f"AM-FM -- Pearson:  {kf:s} => {pear:6.3f}  p={p:6.4f}")
         spear, p = spearmanr(v, am_fm_scores)
-        print(f"_wor FM -- Spearman: {kf:s}=> {spear:6.3f} p={p:6.4f}")
+        print(f"AM-FM -- Spearman: {kf:s} => {spear:6.3f} p={p:6.4f}")
         amfm_pear_sum = amfm_pear_sum + pear
         amfm_spear_sum = amfm_spear_sum + spear
         amfm_count = amfm_count + 1
 
     df["am_fm_scores"] = am_fm_scores
     amfm_pear_mean = amfm_pear_sum / amfm_count
-    print(f"\nmean r: {amfm_pear_mean:6.4f}")
+    print(f"\nPearson mean r: {amfm_pear_mean:6.4f}")
     amfm_spear_mean = amfm_spear_sum / amfm_count
-    print(f"mean r: {amfm_spear_mean:6.4f}")
+    print(f"Spearman mean r: {amfm_spear_mean:6.4f}")
 
     # write file with all computed scores
-    df.to_csv(dataset + "_wor_" + "_results.csv", index=None)
-
-#
+    df.to_csv(path_data + "{}/{}_wor_".format(dataset, dataset) + args.eval_type + "_results.csv", index=None)
+    

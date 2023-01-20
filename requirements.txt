@@ -2,3 +2,5 @@ scipy
 scikit-learn
 torch
 transformers
+pandas
+sentence_transformers

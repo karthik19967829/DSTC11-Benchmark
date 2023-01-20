@@ -56,7 +56,7 @@ if [[ $? -ne 0 ]]; then  exit 1; fi
 echo "dataset:    ${dataset}"
 echo "processor:  ${processor}"
 echo "scoring:    ${scoring}"
-echo "eval_type": ${eval_type}
+echo "eval_type:  ${eval_type}"
 python --version
 echo ""
 # debug="-m pdb"
@@ -66,7 +66,7 @@ python ${debug} compute_sent_${scoring}.py \
        \
        --dataset=${dataset} \
        --device=${processor} \
-       --eval_type=${eval_type}
+       --eval_type=${eval_type} \
        --am_model_path=finetuned_lm/embedding_models/full_am \
        --fm_model_path=finetuned_lm/language_models/full_fm # \
 #   | grep 'annotations.Overall' > "${dataset}_${scoring}__results.score"
