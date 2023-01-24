@@ -5,15 +5,13 @@
 # --needs to access the actual lib; not sure what goes wrong with container
 export LD_LIBRARY_PATH=/home/air/anaconda3/lib
 
-dataset="fed-turn"
+# dataset="convai-grade"
 processor=cuda  # cpu | cuda
-
 scoring=wor  # wr | wor | dial
 # wr: reference-based; turn-level
 # wor: reference-free; turn-level
 # dial: global dialog rating
-
-eval_type=zh
+# eval_type=en
 if [ $# -eq 0 ]; then echo "$0: -d <dataset> -p <processor> -s <scoring> -e <eval_type>"; exit 2 ; fi
 
 SHORT=d:,p:,s:,e:,h

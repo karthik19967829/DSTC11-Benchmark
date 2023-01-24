@@ -148,7 +148,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", type=str, default="up")
     parser.add_argument("--device", type=str, default="cuda:0")
-    parser.add_argument("--eval_type", type=str, default="par")
+    parser.add_argument("--eval_type", type=str, default="")
     parser.add_argument(
         "--am_model_path", type=str, default="embedding_models/persona_am/"
     )
@@ -182,12 +182,20 @@ if __name__ == "__main__":
     )
 
     # get data
+    if not dataset:
+        raise('Please, specify a valid dataset: -d <dataset_name>')
     path_data = "DSTC_11_Track_4/metadata/dev/"
     path_dataset = path_data + "{}/{}_eval_zh_es_pa.json".format(dataset, dataset)
     with open(path_dataset) as f:
         df = pd.json_normalize(json.load(f))
     df = normalize_df(dataset, df, dataset_meta_info)
-    if args.eval_type =='zh':
+
+    if not args.eval_type:
+        raise('Please, specify a valid type of evaluation: -e <eval_type>')
+    if args.eval_type =='en':
+        response_list = df.response.to_list()
+        ct_list = df.context.to_list()
+    elif args.eval_type =='zh':
         response_list = df.response_zh.to_list()
         ct_list = df.context_zh.to_list()
     elif args.eval_type =='es':
@@ -196,9 +204,6 @@ if __name__ == "__main__":
     elif args.eval_type =='par':
         response_list = df.response_pa.to_list()
         ct_list = df.context_pa.to_list()
-    else:
-        response_list = df.response.to_list()
-        ct_list = df.context.to_list()
 
     response_list = [item if item != "" else "no response" for item in response_list]
 
