@@ -92,9 +92,9 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--data_name', default=None, type=str, required=True, help="name of input data")
 	parser.add_argument('--data_path', default='DSTC_11_Track_4/metadata/dev/', type=str, required=False, help="path of input original data")
-	parser.add_argument('--zh_data_path', default='DSTC_11_Track_4/task1/data/dev/en_zh/', type=str, required=False, help="path of Chinese translated data")
-	parser.add_argument('--es_data_path', default='DSTC_11_Track_4/task1/data/dev/en_es/', type=str, required=False, help="path of Spanish translated data")
-	parser.add_argument('--pa_data_path', default='DSTC_11_Track_4/task2/data/dev/', type=str, required=False, help="path of Spanish translated data")
+	parser.add_argument('--zh_data_path', default='DSTC_11_Track_4/task1/dev/en_zh/', type=str, required=False, help="path of Chinese translated data")
+	parser.add_argument('--es_data_path', default='DSTC_11_Track_4/task1/dev/en_es/', type=str, required=False, help="path of Spanish translated data")
+	parser.add_argument('--pa_data_path', default='DSTC_11_Track_4/task2/dev/', type=str, required=False, help="path of Spanish translated data")
 
 	args=parser.parse_args()
 	if not args.data_name:
