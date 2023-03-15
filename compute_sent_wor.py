@@ -184,7 +184,7 @@ if __name__ == "__main__":
     # get data
     if not dataset:
         raise('Please, specify a valid dataset: -d <dataset_name>')
-    path_data = "DSTC_11_Track_4/metadata/dev/"
+    path_data = "DSTC_11_Track_4/metadata/dev/en/"
     path_dataset = path_data + "{}/{}_eval_zh_es_pa.json".format(dataset, dataset)
     with open(path_dataset) as f:
         df = pd.json_normalize(json.load(f))
