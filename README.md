@@ -21,7 +21,7 @@ The leaderboard shows the corresponding Spearman Correlation Coefficients for ea
 
 | System | CG | DH | DG | DZ | D7 | EG | FD | FT | HM | PS | PU | PZ | TU | AVG |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| AM-FM | 0.2842 | 0.0512 | 0.2879 | 0.1356 | 0.0374 | 0.2452 | 0.1243 | -0.0039 | 0.1080 | 0.0192 | 0.0730 | 0.4241 | 0.0872 | 0.1447 |
+| AM-FM PAR | 0.2842 | 0.0512 | 0.2879 | 0.1356 | 0.0374 | 0.2452 | 0.1243 | -0.0039 | 0.1080 | 0.0192 | 0.0730 | 0.4241 | 0.0872 | 0.1447 |
 
 # Installation and setup
 
