@@ -1,9 +1,8 @@
 # DSTC11-Benchmark
 
-The purpose of this project is to identify a baseline classifier for DSTC-11. The default choice is [Deep AM-FM](readings/IWSDS_2020_paper_11.pdf) (Zhang et al, 2020) (used for DSTC10 and previously).
+The purpose of this project is to identify a baseline classifier for DSTC-11. The default choice is [Deep AM-FM](readings/IWSDS_2020_paper_11.pdf) (Zhang et al, 2020) (used for DSTC10 and previously). This model has been adapted to be able to evaluate multilingual datasets, as well as to work with paraphrased and back-translated sentences.
 
-This project will investigate more recent approaches, based on fine-tuned large language models. Zhang et al note that their approach may be limited due to domain specificity. On the other hand LLMs are trained from large corpora that in priciple are less domain-dependent. This is an empirical question.
-This project will investigate more recent approaches, based on fine-tuned large language models. Zhang et al note that their approach may be limited due to domain specificity. On the other hand, LLMs are trained from large corpora that in priciple are less domain-dependent. This is an empirical question.
+This project will investigate more recent approaches, based on fine-tuned large language models. Zhang et al note that their approach may be limited due to domain specificity. On the other hand LLMs are trained from large corpora that in principle are less domain-dependent. This is an empirical question.
 
 # Automatic Evaluation Results
 
